@@ -63,16 +63,16 @@ route.get('/:id/batches/:id1', (req, res) => {
         });
     });
 });
-// route.get('/:id/batches/:id/lectures',(req,res)=>{
-//     Course.findAll().then((students) => {
-//         res.status(200).send(students)
-//     })
-//     .catch((err) => {
-//         res.status(500).send({
-//             error: "Could not retrieve Students"
-//         })
-//     }) 
-// })
+route.get('/:id/batches/:id/lectures', (req, res) => {
+    db_1.Course.findAll().then((students) => {
+        res.status(200).send(students);
+    })
+        .catch((err) => {
+        res.status(500).send({
+            error: "Could not retrieve Students"
+        });
+    });
+});
 // route.get('/:id/batches/:id/lectures/:id',(req,res)=>{
 //     Course.findAll().then((students) => {
 //         res.status(200).send(students)
