@@ -4,6 +4,7 @@ import Sequelize from 'sequelize'
 const db = new Sequelize('learningManagementDB', 'shweta3', 'password', {
     dialect: 'mysql',
     host: 'localhost',
+    port:3306,
     pool:{
         min:0,
         max:5,

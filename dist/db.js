@@ -8,6 +8,7 @@ const sequelize_1 = __importDefault(require("sequelize"));
 const db = new sequelize_1.default('learningManagementDB', 'shweta3', 'password', {
     dialect: 'mysql',
     host: 'localhost',
+    port: 3306,
     pool: {
         min: 0,
         max: 5,

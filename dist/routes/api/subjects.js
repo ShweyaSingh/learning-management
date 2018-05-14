@@ -45,11 +45,9 @@ route.get('/:id/teachers', (req, res) => {
         where: {
             subjectId: subjectId
         }
-    })
-        .then((subjectTeachers) => {
+    }).then((subjectTeachers) => {
         res.status(200).send(subjectTeachers);
-    })
-        .catch((err) => {
+    }).catch((err) => {
         res.status(500).send({
             error: "Could not retrieve teachers for subject with this particular id"
         });

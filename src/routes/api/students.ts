@@ -39,6 +39,9 @@ route.get('/:id', (req, res) => {
 route.get('/:id/batches', (req, res) => {
     let studentid = parseInt(req.params.id)
     BatchStudentMapping.findAll({
+        attributes:[
+            'batchId','studentId'
+        ],
         include: [
             { model: Batch }
         ],

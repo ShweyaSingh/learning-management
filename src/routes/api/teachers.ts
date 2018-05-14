@@ -35,11 +35,13 @@ route.get('/:id', (req, res) => {
 })
 
 // get all batches /teachers/:id/batches
-
+// Test 
 route.get('/:id/batches', (req, res) => {
     let teacherid = parseInt(req.params.id)
     Lecture.findAll({
-        distinct: true,
+        attributes:[
+            'teacherId','batchId'
+        ],
         include: [
             {
                 model: Batch

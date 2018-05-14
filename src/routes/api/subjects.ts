@@ -45,22 +45,20 @@ route.get('/:id/teachers', (req, res) => {
         where: {
             subjectId: subjectId
         }
+    }).then((subjectTeachers) => {
+        res.status(200).send(subjectTeachers)
+    }).catch((err) => {
+        res.status(500).send({
+            error: "Could not retrieve teachers for subject with this particular id"
+        })
     })
-        .then((subjectTeachers) => {
-            res.status(200).send(subjectTeachers)
-        })
-        .catch((err) => {
-            res.status(500).send({
-                error: "Could not retrieve teachers for subject with this particular id"
-            })
-        })
 })
 
 //add new subject
 route.post('/', function (req, res) {
     Subject.create({
         subjectname: req.body.subject,
-        courseId:req.body.courseId
+        courseId: req.body.courseId
     }).then((subject) => {
         res.status(201).send(subject)
     }).catch((err) => {

@@ -1,4 +1,5 @@
-#Please add vendor using localhost:4444/api/vendors/addvendor
+Please enroll students in Batch using http://localhost:4444/api/EnrollStudentBatch post request
 
-##To add product you have to first login and then clicks on Add Product link on navigation bar.
+or insert manually in the table 'bsmappings' in the database.
+
 
