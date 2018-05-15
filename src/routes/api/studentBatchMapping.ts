@@ -8,23 +8,10 @@ route.post('/', function (req, res) {
         studentId: req.body.studentId,
         batchId:req.body.batchId
     }).then((studentbatchmapping) => {
-        res.status(201).send(studentbatchmapping);
+        res.status(201).redirect('/');
     }).catch((err) => {
         res.status(501).send({
             error: "Could not Enroll student to batch"
-        })
-    })
-})
-
-route.post('/batch', function (req, res) {
-    Batch.create({
-        batchname: req.body.name,
-        courseId:req.body.course
-    }).then((batch) => {
-        res.status(201).send(batch);
-    }).catch((err) => {
-        res.status(501).send({
-            error: "Could not add batch"
         })
     })
 })
@@ -35,7 +22,7 @@ route.post('/lecture', function (req, res) {
         batchId:req.body.batch,
         teacherId:req.body.teacher
     }).then((lecture) => {
-        res.status(201).send(lecture);
+        res.status(201).redirect('/');
     }).catch((err) => {
         res.status(501).send({
             error: "Could not lecture"

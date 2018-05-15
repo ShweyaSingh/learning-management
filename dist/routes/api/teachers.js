@@ -8,8 +8,11 @@ const express_1 = __importDefault(require("express"));
 const route = express_1.default.Router();
 // get all /teachers
 route.get('/', (req, res) => {
-    db_1.Teacher.findAll({})
-        .then((teachers) => {
+    db_1.Teacher.findAll({
+        include: [
+            { model: db_1.Subject }
+        ]
+    }).then((teachers) => {
         res.status(200).send(teachers);
     })
         .catch((err) => {
@@ -59,14 +62,22 @@ route.get('/:id/batches', (req, res) => {
 });
 //post one /teacher
 route.post('/', function (req, res) {
-    db_1.Teacher.create({
-        teachername: req.body.name,
-        subjectId: req.body.subjectId
-    }).then((teacher) => {
-        res.status(201).send(teacher);
-    }).catch((err) => {
+    db_1.Subject.findOne({
+        where: { subjectname: req.body.subjectname }
+    }).then((subject) => {
+        db_1.Teacher.create({
+            teachername: req.body.name,
+            subjectId: subject.id
+        }).then((teacher) => {
+            res.status(201).send(teacher);
+        }).catch((err) => {
+            res.status(501).send({
+                error: "Could not add new Teacher"
+            });
+        });
+    }).catch(() => {
         res.status(501).send({
-            error: "Could not add new Teacher"
+            error: "Could not find Subject of this name"
         });
     });
 });

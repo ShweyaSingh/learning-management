@@ -1,4 +1,4 @@
-import { Teacher, Batch, Lecture } from '../../db'
+import { Teacher, Batch, Lecture, Subject } from '../../db'
 import express from 'express'
 const route = express.Router()
 import path from 'path'
@@ -6,10 +6,13 @@ import path from 'path'
 // get all /teachers
 
 route.get('/', (req, res) => {
-    Teacher.findAll({})
-        .then((teachers) => {
-            res.status(200).send(teachers)
-        })
+    Teacher.findAll({
+        include: [
+            { model: Subject }
+        ]
+    }).then((teachers) => {
+        res.status(200).send(teachers)
+    })
         .catch((err) => {
             res.status(500).send({
                 error: "Could not retrieve Students"
@@ -39,8 +42,8 @@ route.get('/:id', (req, res) => {
 route.get('/:id/batches', (req, res) => {
     let teacherid = parseInt(req.params.id)
     Lecture.findAll({
-        attributes:[
-            'teacherId','batchId'
+        attributes: [
+            'teacherId', 'batchId'
         ],
         include: [
             {
@@ -63,15 +66,23 @@ route.get('/:id/batches', (req, res) => {
 //post one /teacher
 
 route.post('/', function (req, res) {
-    Teacher.create({
-        teachername: req.body.name,
-        subjectId: req.body.subjectId 
-    }).then((teacher) => {
-        res.status(201).send(teacher);
-    }).catch((err) => {
-        res.status(501).send({
-            error: "Could not add new Teacher"
+    Subject.findOne({
+        where: { subjectname: req.body.subjectname }
+    }).then((subject:any) => {
+        Teacher.create({
+            teachername: req.body.name,
+            subjectId: subject.id
+        }).then((teacher) => {
+            res.status(201).redirect('/');
+        }).catch((err) => {
+            res.status(501).send({
+                error: "Could not add new Teacher"
+            })
         })
+    }).catch(()=>{
+        res.status(501).send({
+            error: "Could not find Subject of this name"
+        }) 
     })
 })
 

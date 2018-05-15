@@ -34,6 +34,9 @@ route.get('/:id', (req, res) => {
 });
 route.get('/:id/batches', (req, res) => {
     db_1.Batch.findAll({
+        include: [
+            { model: db_1.Course }
+        ],
         where: {
             courseId: req.params.id
         }

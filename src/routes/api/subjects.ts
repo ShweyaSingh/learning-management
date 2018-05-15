@@ -1,12 +1,15 @@
-import { Subject, Teacher } from '../../db'
+import { Subject, Teacher, Course } from '../../db'
 import express from 'express'
 const route = express.Router()
 import path from 'path'
 
 //get all subjects
 route.get('/', (req, res) => {
-    Subject.findAll()
-        .then((subjects) => {
+    Subject.findAll({
+        include:[
+            {model:Course}
+        ]
+    }).then((subjects) => {
             res.status(200).send(subjects)
         })
         .catch((err) => {
@@ -56,14 +59,22 @@ route.get('/:id/teachers', (req, res) => {
 
 //add new subject
 route.post('/', function (req, res) {
-    Subject.create({
-        subjectname: req.body.subject,
-        courseId: req.body.courseId
-    }).then((subject) => {
-        res.status(201).send(subject)
-    }).catch((err) => {
+    Course.findOne({
+        where:{coursename:req.body.coursename}
+    }).then((course:any)=>{
+        Subject.create({
+            subjectname: req.body.name,
+            courseId: course.id
+        }).then((subject) => {
+            res.status(201).redirect('/')
+        }).catch((err) => {
+            res.status(501).send({
+                error: "Could not create new subject"
+            })
+        })
+    }).catch((err)=>{
         res.status(501).send({
-            error: "Could not add new subject"
+            error: "Could not find course of this name"
         })
     })
 })

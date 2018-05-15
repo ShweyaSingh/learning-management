@@ -18,18 +18,6 @@ route.post('/', function (req, res) {
         });
     });
 });
-route.post('/batch', function (req, res) {
-    db_1.Batch.create({
-        batchname: req.body.name,
-        courseId: req.body.course
-    }).then((batch) => {
-        res.status(201).send(batch);
-    }).catch((err) => {
-        res.status(501).send({
-            error: "Could not add batch"
-        });
-    });
-});
 route.post('/lecture', function (req, res) {
     db_1.Lecture.create({
         lecturename: req.body.name,

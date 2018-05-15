@@ -34,6 +34,9 @@ route.get('/:id',(req,res)=>{
 
 route.get('/:id/batches',(req,res)=>{
     Batch.findAll({
+        include:[
+            {model:Course}
+        ],
         where:{
             courseId: req.params.id
         }
@@ -203,17 +206,13 @@ route.get('/:id/batches/:bid/teachers',(req,res)=>{
     }) 
 })
 
-
-
-
-
 //post one /courses
 
 route.post('/', function (req, res) {
     Course.create({
         coursename: req.body.name,
     }).then((course) => {
-        res.status(201).send(course);
+        res.status(201).redirect('/');
     }).catch((err) => {
         res.status(501).send({
             error: "Could not add new course"
