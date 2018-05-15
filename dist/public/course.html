@@ -58,11 +58,12 @@
                     <a class="nav-link" href="http://localhost:4444/teacher.html">Teachers</a>
                 </li>
             </ul>
-
         </nav>
+
+
         <br>
         <div class="row">
-            <div class="col-md-3">All Courses !</div>
+            <div class="col-md-3"><h4>All Courses !</h4></div>
             <div class="col-md-6"></div>
             <div class="col-md-3">
                 <a class="btn btn-primary" href="http://localhost:4444/addcourse.html">Add Course</a>
@@ -79,44 +80,76 @@
                 </div>
             </div>
         </div>
-        <br>
-        <hr>
+
+
         <div class="" v-if="batchactive">
+                <br>
+                <hr>
             <div class="row">
-                <div class="col-md-3">All Batches in Course !</div>
+                <div class="col-md-3"><h4>All Batches in Course !</h4></div>
                 <div class="col-md-6"></div>
                 <div class="col-md-3">
                     <a class="btn btn-primary" href="http://localhost:4444/addbatch.html">Add Batch</a>
                 </div>
             </div>
             <br>
-            <div class="row " v-if="lectures && lectures.length ">
-                <div class="col-md-4 card mx-auto p-3 " v-for="lecture in lectures ">
+            <div class="row " v-if="batches && batches.length ">
+                <div class="col-md-4 card mx-auto p-3 " v-for="batch in batches ">
                     <h4 class="product-title ">{{batch.batchname}}</h4>
                     <div class="product-ventor ">{{batch.course.coursename}}</div>
                     <div class="row ">
-                        <div class="col m-3 p-3 "></div>
-                        <button class="btn btn-primary col-4 m-4 " @click="viewLectures(product.id) ">Add To Cart</button>
+                        <button class="btn btn-primary col-5 m-3 " @click="viewStudents(batch.id)">View All Students</button>
+                        <button class="btn btn-primary col-4 m-4 " @click="viewLectures(batch.course.id,batch.id) ">View Lectures</button>
                     </div>
                 </div>
             </div>
         </div>
+
+
+        
         <div class="" v-if="lectureactive">
+                <hr>
+                <br>
             <div class="row">
-                <div class="col-md-3">All lectures in Batch !</div>
+                <div class="col-md-3"><h4>All lectures in Batch !</h4></div>
                 <div class="col-md-6"></div>
                 <div class="col-md-3">
-                    <a class="btn btn-primary" href="http://localhost:4444/addbatch.html">Add Batch</a>
+                    <a class="btn btn-primary" href="http://localhost:4444/addlecture.html">Add Lecture</a>
                 </div>
             </div>
             <br>
             <div class="row " v-if="lectures && lectures.length ">
                 <div class="col-md-4 card mx-auto p-3 " v-for="lecture in lectures ">
                     <h4 class="product-title ">{{lecture.lecturename}}</h4>
-                    <div class="product-ventor ">{{batch.course.coursename}}</div>
+                    <div class="product-ventor ">{{lecture.batch.batchname}}</div>
                 </div>
             </div>
         </div>
+
+
+        <div class="" v-if="studentactive">
+            <hr>
+            <br>
+            <div class="row">
+                <div class="col-md-3">
+                    <h4>All Students!</h4>
+                </div>
+                <div class="col-md-6"></div>
+                <div class="col-md-3"></div>
+            </div>
+            <br>
+            <div class="row " v-if="students && students.length ">
+                <div class="col-md-4 card mx-auto p-3 " v-for="student in students ">
+                    <h4 class="product-title ">{{student.studentname}}</h4>
+                    <div class="row ">
+                        <div class="col m-3 p-3 "></div>
+                        <button class="btn btn-primary col-4 m-4 " @click="enrollStudent(batchidforstudent,student.id) ">Enroll Student</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <br>
     </div>
     <script src="https://unpkg.com/axios/dist/axios.min.js "></script>
     <script>
@@ -125,10 +158,12 @@
             data: {
                 courses: [],
                 batches: [],
-                lectures:[],
+                lectures: [],
+                students: [],
                 batchactive: false,
                 studentactive: false,
                 lectureactive: false,
+                batchidforstudent: '',
                 errors: []
             },
             created() {
@@ -145,14 +180,57 @@
                         axios.get(`http://localhost:4444/api/courses/${courseid}/batches`).then(response => {
                             this.batches = response.data;
                             this.batchactive = true;
+                            this.lectureactive = false;
+                            this.studentactive = false;
                             console.log(this.batches.length)
                         }).catch(e => {
                             this.errors.push(e)
                         })
                     }
                 },
-                viewLectures(batchid){
+                viewLectures(courseid, batchid) {
+                    if (batchid && courseid) {
+                        axios.get(`http://localhost:4444/api/courses/${courseid}/batches/${batchid}/lectures`).then(response => {
+                            this.lectures = response.data;
+                            this.lectureactive = true;
+                            this.studentactive = false;
+                            console.log(this.lectures.length)
+                        }).catch(e => {
+                            this.errors.push(e)
+                        })
+                    }
+                },
+                viewStudents(batchid) {
+                    if (batchid) {
+                        axios.get(`http://localhost:4444/api/students`).then(response => {
+                            this.students = response.data;
+                            this.lectureactive = false;
+                            this.studentactive = true;
+                            this.batchidforstudent = batchid;
+                            console.log(this.students.length)
+                        }).catch(e => {
+                            this.errors.push(e)
+                        })
+                    }
+                },
+                enrollStudent(batchId, studentId) {
+                    if (batchId, studentId) {
 
+                        axios.post(`http://localhost:4444/api/EnrollStudentBatch/map`,{batchId,studentId}).then(response => {
+                            if(response.status==201)
+                            {
+                                console.log("here")
+                                window.alert("Student Enrolled!")
+                            }
+                            if(response.status==202)
+                            {
+                                window.alert("Student already Enrolled in this batch!")
+                            }
+                            console.log("exit");
+                        }).catch(e => {
+                            this.errors.push(e)
+                        })
+                    }
                 }
             }
         })

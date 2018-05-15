@@ -76,6 +76,7 @@ route.get('/:id/batches/:bid/lectures', (req, res) => {
         }
     }).then((batch) => {
         db_1.Lecture.findAll({
+            include: [{ model: db_1.Batch }],
             where: {
                 batchId: batch.id
             }
@@ -198,7 +199,7 @@ route.post('/', function (req, res) {
     db_1.Course.create({
         coursename: req.body.name,
     }).then((course) => {
-        res.status(201).send(course);
+        res.status(201).redirect('/');
     }).catch((err) => {
         res.status(501).send({
             error: "Could not add new course"

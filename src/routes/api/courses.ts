@@ -80,6 +80,7 @@ route.get('/:id/batches/:bid/lectures',(req,res)=>{
         }
     }).then((batch:any) => {
         Lecture.findAll({
+            include:[{model:Batch}],
             where:{
                 batchId:batch.id
             }

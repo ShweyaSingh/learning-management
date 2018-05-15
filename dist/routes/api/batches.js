@@ -11,9 +11,6 @@ route.get('/', (req, res) => {
         include: [
             { model: db_1.Course }
         ],
-        where: {
-            courseId: req.query.courseid
-        }
     }).then((batches) => {
         res.status(200).send(batches);
     }).catch((err) => {

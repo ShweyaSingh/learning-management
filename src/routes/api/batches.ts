@@ -8,9 +8,9 @@ route.get('/', (req, res) => {
         include: [
             { model: Course }
         ],
-        where:{
-            courseId:req.query.courseid
-        }
+        // where:{
+        //     courseId:req.query.courseid
+        // }
     }).then((batches) => {
         res.status(200).send(batches)
     }).catch((err) => {

@@ -65,7 +65,7 @@ route.post('/', function (req, res) {
             subjectname: req.body.name,
             courseId: course.id
         }).then((subject) => {
-            res.status(201).send(subject);
+            res.status(201).redirect('/');
         }).catch((err) => {
             res.status(501).send({
                 error: "Could not create new subject"

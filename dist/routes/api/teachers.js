@@ -69,7 +69,7 @@ route.post('/', function (req, res) {
             teachername: req.body.name,
             subjectId: subject.id
         }).then((teacher) => {
-            res.status(201).send(teacher);
+            res.status(201).redirect('/');
         }).catch((err) => {
             res.status(501).send({
                 error: "Could not add new Teacher"
