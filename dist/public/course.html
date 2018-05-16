@@ -63,7 +63,7 @@
 
         <br>
         <div class="row">
-            <div class="col-md-3"><h4>All Courses !</h4></div>
+            <div class="col-md-3"><h4>List of Courses</h4></div>
             <div class="col-md-6"></div>
             <div class="col-md-3">
                 <a class="btn btn-primary" href="http://localhost:4444/addcourse.html">Add Course</a>
@@ -86,7 +86,7 @@
                 <br>
                 <hr>
             <div class="row">
-                <div class="col-md-3"><h4>All Batches in Course !</h4></div>
+                <div class="col-md-3"><h4>All Batches in Course</h4></div>
                 <div class="col-md-6"></div>
                 <div class="col-md-3">
                     <a class="btn btn-primary" href="http://localhost:4444/addbatch.html">Add Batch</a>
@@ -111,7 +111,7 @@
                 <hr>
                 <br>
             <div class="row">
-                <div class="col-md-3"><h4>All lectures in Batch !</h4></div>
+                <div class="col-md-3"><h4>All lectures in Batch</h4></div>
                 <div class="col-md-6"></div>
                 <div class="col-md-3">
                     <a class="btn btn-primary" href="http://localhost:4444/addlecture.html">Add Lecture</a>
@@ -132,7 +132,7 @@
             <br>
             <div class="row">
                 <div class="col-md-3">
-                    <h4>All Students!</h4>
+                    <h4>List of All Students</h4>
                 </div>
                 <div class="col-md-6"></div>
                 <div class="col-md-3"></div>
@@ -216,7 +216,7 @@
                 enrollStudent(batchId, studentId) {
                     if (batchId, studentId) {
 
-                        axios.post(`http://localhost:4444/api/EnrollStudentBatch/map`,{batchId,studentId}).then(response => {
+                        axios.post(`http://localhost:4444/api/enrollStudentBatch/map`,{batchId,studentId}).then(response => {
                             if(response.status==201)
                             {
                                 console.log("here")

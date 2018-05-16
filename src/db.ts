@@ -1,14 +1,15 @@
 import Sequelize from 'sequelize'
 //const Sequelize = require('sequelize')
 
-const db = new Sequelize('learningManagementDB', 'shweta3', 'password', {
-    dialect: 'mysql',
+const db = new Sequelize({
+    dialect: 'sqlite',
     host: 'localhost',
     port:3306,
     pool:{
         min:0,
         max:5,
-    }
+    },
+    storage:'learningmanagementDB.db'
 })
 
 export const Course = db.define('courses', {

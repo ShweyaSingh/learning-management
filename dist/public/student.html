@@ -110,29 +110,23 @@
                 <div class="col"></div>
             </div>
             <br>
-            <form action="api/EnrollStudentBatch/" method="POST">
-                <div class="form-group row hidden" >
-                        <div class="col-sm-10">
-                            <input type="text" hidden class="form-control" name="id" value="studentid" placeholder="Enter Batch name">
-                        </div>
-                    </div>
-                <div class="form-group row">
-                    <label class="col-sm-2 col-form-label">Select Batch</label>
-                    <div class=" col-sm-10">
-                        <select v-if="batches && batches.length" class="selectpicker" name="batchname">
-                            <option v-for="batch in batches">{{batch.batchname}}</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <div class="form-group row">
-                    <div class="col-sm-10">
-                        <button class="btn btn-primary" type="submit">Enroll</button>
-                    </div>
-                </div>
-            </form>
-        </div>
 
+            <div class="row">
+                <label class="col-sm-2 col-form-label">Select Batch</label>
+                <div class=" col-sm-10">
+                    <select v-if="batches && batches.length" class="selectpicker" name="batchname" v-model="batchid">
+                        <option disabled value="">Select Batch</option>
+                        <option v-for="batch in batches" v-bind:value="batch.id">{{batch.batchname}}</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-10">
+                    <button class="btn btn-primary" @click="enrollToBatch(batchid,studentid)">Enroll</button>
+                </div>
+            </div>
+        </div>
     </div>
     <script src="https://unpkg.com/axios/dist/axios.min.js "></script>
     <script>
@@ -145,13 +139,13 @@
                 detailActive: false,
                 enrollActive: false,
                 studentid: '',
+                batchid: '',
                 errors: []
             },
             created() {
                 axios.get('http://localhost:4444/api/students')
                     .then((response) => {
                         this.students = response.data
-                        console.log(students)
                         console.log(this.students.length)
                     }).catch(function (error) {
                         console.log(error)
@@ -165,22 +159,35 @@
                             this.studentdetails = response.data
                             this.detailActive = true
                             this.studentid = studentid;
-                            console.log(this.studentdetails.length)
                         }).catch((err) => console.log("error occur"))
                     }
                 },
                 allBatches() {
 
-                    axios.get(`http://localhost:4444/api/batches`)
-                        .then((response) => {
-                            this.batches = response.data
-                            this.enrollActive = true
-                            console.log(this.batches.length)
-                        })
-                        .catch(e => {
+                    axios.get(`http://localhost:4444/api/batches`).then((response) => {
+                        this.batches = response.data
+                        this.enrollActive = true
+                        console.log(this.batches.length)
+                    }).catch(e => {
+                        this.errors.push(e)
+                    })
+                },
+                enrollToBatch(batchid, studentid) {
+                    if (batchid, studentid) {
+                        axios.post(`http://localhost:4444/api/enrollStudentBatch`, { batchid, studentid })
+                        .then(response => {
+                            if (response.status == 201) {
+                                console.log("here")
+                                window.alert("Student Enrolled!")
+                            }
+                            if (response.status == 202) {
+                                window.alert("Student already Enrolled in this batch!")
+                            }
+                            console.log("exit");
+                        }).catch(e => {
                             this.errors.push(e)
                         })
-
+                    }
                 },
             }
         })

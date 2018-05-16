@@ -13,6 +13,6 @@ route.use('/courses',courses);
 route.use('/teachers',teachers);
 route.use('/students',students);
 route.use('/subjects',subjects);
-route.use('/EnrollStudentBatch',mapstudentbatch);
+route.use('/enrollStudentBatch',mapstudentbatch);
 route.use('/lectures',lectures);
 export default route

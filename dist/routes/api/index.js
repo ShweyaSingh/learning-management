@@ -17,6 +17,6 @@ route.use('/courses', courses_1.default);
 route.use('/teachers', teachers_1.default);
 route.use('/students', students_1.default);
 route.use('/subjects', subjects_1.default);
-route.use('/EnrollStudentBatch', studentBatchMapping_1.default);
+route.use('/enrollStudentBatch', studentBatchMapping_1.default);
 route.use('/lectures', lectures_1.default);
 exports.default = route;

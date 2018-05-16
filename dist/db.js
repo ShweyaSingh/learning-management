@@ -5,14 +5,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_1 = __importDefault(require("sequelize"));
 //const Sequelize = require('sequelize')
-const db = new sequelize_1.default('learningManagementDB', 'shweta3', 'password', {
-    dialect: 'mysql',
+const db = new sequelize_1.default({
+    dialect: 'sqlite',
     host: 'localhost',
     port: 3306,
     pool: {
         min: 0,
         max: 5,
-    }
+    },
+    storage: 'learningmanagementDB.db'
 });
 exports.Course = db.define('courses', {
     coursename: {
